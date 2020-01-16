@@ -1,28 +1,38 @@
 import React from 'react'
 
 const validators = {
-  name: val => true
+  name: val => val.length > 3
 }
 
 class UserForm extends React.Component {
   state = {
-    data: {
+    data: {name: ""
     },
-    errors: {
+    errors: {name: true
     },
-    touch: {
+    touch: {name: false
     }
   }
 
   handleSubmit = (event) => {
+    event.preventDefault()
+    this.props.onAddUser(this.state.data)
     // call parent function
   }
 
   handleBlur = (event) => {
+    this.setState({touch:{name: true}})
     // means in and out
   }
 
+
   handleChange = (event) => {
+    //const name = event.target.name
+    const value = event.target.value
+    this.setState({ data: { name: value}, errors :{name: !validators.name(value)}})
+    const valid = validators.name(value)
+    //const valid = validators[name](value)
+
     // use event.target!!
     // change state.data and state.error ;)
   }
@@ -39,12 +49,12 @@ class UserForm extends React.Component {
 
             <input
               type="text"
-              className="form-control"
+              className={`form-control ${errors.name && touch.name ? "is-invalid" : ""}`}
               id="name"
               autoComplete="off"
-              // value={}
-              // onBlur={}
-              // onChange={}
+              value={data.name}
+              onBlur={this.handleBlur}
+              onChange={this.handleChange}
               placeholder="Name" />
 
             {errors.name && (

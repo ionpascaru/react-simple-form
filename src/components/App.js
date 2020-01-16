@@ -9,7 +9,9 @@ class App extends React.Component {
     users
   }
 
-  handleAddUser = () => {
+  handleAddUser = (user) => {
+    this.setState({users: [...this.state.users, user]})
+
     // receive user and add to state!
   }
 
